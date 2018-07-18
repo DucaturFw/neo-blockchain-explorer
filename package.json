@@ -12,6 +12,7 @@
     "@types/node": "^10.5.2",
     "@types/rethinkdb": "ChrisTalman/rethinkdb",
     "axios": "^0.18.0",
+    "dotenv": "^6.0.0",
     "rethinkdb": "^2.3.3",
     "ts-node": "^7.0.0",
     "typescript": "^2.9.2"

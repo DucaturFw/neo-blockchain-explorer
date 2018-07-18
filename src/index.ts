@@ -1,9 +1,14 @@
 console.log("starting grabber")
 
-let NEO_NODE = "http://18.222.114.103:30333"
+require('dotenv').config()
+
+let NEO_NODE = process.env.NEO_EXPLORER_NEO_NODE || ""
 let TABLE_BLOCKS = "neo_blocks"
 let TABLE_TXS = "neo_txs"
-let DB_NAME = "test"
+let DB_NAME = process.env.NEO_EXPLORER_DB_NAME || ""
+
+console.assert(NEO_NODE, "please provide $NEO_EXPLORER_NEO_NODE!")
+console.assert(DB_NAME, "please provide $NEO_EXPLORER_DB_NAME!")
 
 import axios from "axios"
 import r from "rethinkdb"
