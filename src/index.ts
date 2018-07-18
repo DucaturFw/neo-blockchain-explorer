@@ -3,6 +3,7 @@ console.log("starting grabber")
 let NEO_NODE = "http://18.222.114.103:30333"
 let TABLE_BLOCKS = "neo_blocks"
 let TABLE_TXS = "neo_txs"
+let DB_NAME = "test"
 
 import axios from "axios"
 import r from "rethinkdb"
@@ -17,7 +18,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 ;(async function()
 {
 	let conn = await r.connect(NEO_NODE.replace(/^http\:\/\//, '').replace(/\:\d+$/, ''))
-	let db = r.db('test')
+	let db = r.db(DB_NAME)
 	let init = async () =>
 	{
 		let tables = await db.tableList().run(conn)
