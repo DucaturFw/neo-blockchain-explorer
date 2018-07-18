@@ -5,7 +5,7 @@
   "author": "zlumer",
   "license": "MIT",
   "scripts": {
-    "start": "tsnode src/index.ts"
+    "start": "ts-node src/index.ts"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
