@@ -41,8 +41,8 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 		let lastBlock = await db.table(TABLE_BLOCKS).max('index')('index').default(-1).run(conn)
 
 		console.log(`last block: ${lastBlock}`)
-		console.assert(blockHeight >= lastBlock, "chain is fucking unsynced")
-		if (blockHeight == lastBlock)
+		console.assert(blockHeight > lastBlock, "chain is fucking unsynced")
+		if (blockHeight == lastBlock - 1)
 			return delay(30000)
 		
 		const block = await api("getblock", [lastBlock + 1, 1])
