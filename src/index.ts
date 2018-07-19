@@ -42,7 +42,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 
 		console.log(`last block: ${lastBlock}`)
 		console.assert(blockHeight > lastBlock, "chain is fucking unsynced")
-		if (blockHeight == lastBlock - 1)
+		if (blockHeight == lastBlock + 1)
 			return delay(30000)
 		
 		const block = await api("getblock", [lastBlock + 1, 1])
