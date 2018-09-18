@@ -5,6 +5,8 @@
   "author": "zlumer",
   "license": "MIT",
   "scripts": {
+    "docker:build": "docker build -t neo-grabber .",
+    "docker:run": "docker run --rm --name=neo-grabber-1 neo-grabber",
     "build": "tsc",
     "start": "ts-node src/index.ts"
   },
