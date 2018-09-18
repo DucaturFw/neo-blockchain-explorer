@@ -3,12 +3,15 @@ console.log("starting grabber")
 require('dotenv').config()
 
 let NEO_NODE = process.env.NEO_EXPLORER_NEO_NODE || ""
-let TABLE_BLOCKS = "neo_blocks"
-let TABLE_TXS = "neo_txs"
+let TABLE_BLOCKS = process.env.NEO_EXPLORER_TABLE_BLOCKS || "neo_blocks"
+let TABLE_TXS = process.env.NEO_EXPLORER_TABLE_TXS || "neo_txs"
 let DB_NAME = process.env.NEO_EXPLORER_DB_NAME || ""
+let RETHINK_URI = process.env.NEO_EXPLORER_RETHINK || NEO_NODE.replace(/^http\:\/\//, '').replace(/\:\d+$/, '')
 
 console.assert(NEO_NODE, "please provide $NEO_EXPLORER_NEO_NODE!")
 console.assert(DB_NAME, "please provide $NEO_EXPLORER_DB_NAME!")
+console.assert(TABLE_BLOCKS, "please provide $NEO_EXPLORER_TABLE_BLOCKS!")
+console.assert(TABLE_TXS, "please provide $NEO_EXPLORER_TABLE_TXS!")
 
 import axios from "axios"
 import r from "rethinkdb"
@@ -22,7 +25,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 
 ;(async function()
 {
-	let conn = await r.connect(NEO_NODE.replace(/^http\:\/\//, '').replace(/\:\d+$/, ''))
+	let conn = await r.connect(RETHINK_URI)
 	let db = r.db(DB_NAME)
 	let init = async () =>
 	{
