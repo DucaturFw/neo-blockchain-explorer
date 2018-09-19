@@ -53,7 +53,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 		if (blockHeight <= lastBlock)
 			return console.error("chain is unsynced"), delay(30000)
 
-		const BATCH_SIZE = 100
+		const BATCH_SIZE = blockHeight - lastBlock
 		
 		for (let i = 0; i < BATCH_SIZE; i++)
 		{
