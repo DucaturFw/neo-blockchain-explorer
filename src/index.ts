@@ -36,6 +36,8 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 		let tables = await db.tableList().run(conn)
 		if (tables.indexOf(TABLE_BLOCKS) == -1)
 			await db.tableCreate(TABLE_BLOCKS, { primaryKey: "hash" }).run(conn)
+		if ((await db.table(TABLE_BLOCKS).indexList().run(conn)).indexOf('index') == -1)
+			await db.table(TABLE_BLOCKS).indexCreate('index').run(conn)
 		if (tables.indexOf(TABLE_TXS) == -1)
 			await db.tableCreate(TABLE_TXS, { primaryKey: "txid" }).run(conn)
 	}
@@ -45,7 +47,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 	{
 		let blockHeight = await api<number>("getblockcount")
 		console.log(`block height: ${blockHeight}`)
-		let lastBlock = await db.table(TABLE_BLOCKS).max('index')('index').default(-1).run(conn)
+		let lastBlock = await db.table(TABLE_BLOCKS).max({ index: 'index' })('index').default(-1).run(conn)
 
 		console.log(`last block: ${lastBlock}`)
 		if (blockHeight <= lastBlock)
