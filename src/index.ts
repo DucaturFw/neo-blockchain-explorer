@@ -1,7 +1,5 @@
 console.log("starting grabber")
 
-require('dotenv').config()
-
 let NEO_NODE = process.env.NEO_EXPLORER_NEO_NODE || ""
 let TABLE_BLOCKS = process.env.NEO_EXPLORER_TABLE_BLOCKS || "neo_blocks"
 let TABLE_TXS = process.env.NEO_EXPLORER_TABLE_TXS || "neo_txs"
