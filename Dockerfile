@@ -8,6 +8,8 @@ ARG NEO_EXPLORER_RETHINK
 
 ADD ./ /proj/
 
+WORKDIR /proj
+
 RUN yarn
 
 ENTRYPOINT [ "yarn", "start" ]
