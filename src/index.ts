@@ -24,6 +24,12 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 ;(async function()
 {
 	let conn = await r.connect(RETHINK_URI)
+	
+	// init db
+	let dbs = await r.dbList().run(conn)
+	if (dbs.indexOf(DB_NAME) == -1)
+		await r.dbCreate(DB_NAME).run(conn)
+
 	let db = r.db(DB_NAME)
 	let init = async () =>
 	{
