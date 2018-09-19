@@ -1,15 +1,17 @@
 console.log("starting grabber")
 
 let NEO_NODE = process.env.NEO_EXPLORER_NEO_NODE || ""
+let DB_NAME = process.env.NEO_EXPLORER_DB_NAME || ""
 let TABLE_BLOCKS = process.env.NEO_EXPLORER_TABLE_BLOCKS || "neo_blocks"
 let TABLE_TXS = process.env.NEO_EXPLORER_TABLE_TXS || "neo_txs"
-let DB_NAME = process.env.NEO_EXPLORER_DB_NAME || ""
-let RETHINK_URI = process.env.NEO_EXPLORER_RETHINK || NEO_NODE.replace(/^http\:\/\//, '').replace(/\:\d+$/, '')
+let RETHINK_URI = process.env.NEO_EXPLORER_RETHINK || ""
 
 console.assert(NEO_NODE, "please provide $NEO_EXPLORER_NEO_NODE!")
 console.assert(DB_NAME, "please provide $NEO_EXPLORER_DB_NAME!")
 console.assert(TABLE_BLOCKS, "please provide $NEO_EXPLORER_TABLE_BLOCKS!")
 console.assert(TABLE_TXS, "please provide $NEO_EXPLORER_TABLE_TXS!")
+
+console.log(`neo node: ${NEO_NODE}\ndb name: ${DB_NAME}\nblocks table: ${TABLE_BLOCKS}\ntxs table: ${TABLE_TXS}\nrethink: ${RETHINK_URI}`)
 
 import axios from "axios"
 import r from "rethinkdb"
