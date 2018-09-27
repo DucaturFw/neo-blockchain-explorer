@@ -26,11 +26,14 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 ;(async function()
 {
 	let conn = await r.connect(RETHINK_URI)
+	console.log(`connected to rethink`)
 	
 	// init db
 	let dbs = await r.dbList().run(conn)
 	if (dbs.indexOf(DB_NAME) == -1)
-		await r.dbCreate(DB_NAME).run(conn)
+		await r.dbCreate(DB_NAME).run(conn), console.log(`created db ${DB_NAME}`)
+	else
+		console.log(`db ${DB_NAME} found`)
 
 	let db = r.db(DB_NAME)
 	let init = async () =>
@@ -47,6 +50,8 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 			await db.tableCreate(TABLE_TXS, { primaryKey: "txid" }).run(conn)
 	}
 	await init()
+
+	console.log(`inited table`)
 	
 	let getBlocks = async () =>
 	{
@@ -77,17 +82,28 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 			await db.table(TABLE_BLOCKS).insert(block).run(conn)
 		}
 	}
+	console.log(`fetching blocks...`)
+
 	let blocks = await db.table(TABLE_BLOCKS)
 		.changes({ includeInitial: true })
 		.map(x => x('new_val'))
 		.concatMap(x => <any>x('tx'))
 		.filter(a => db.table(TABLE_TXS).getAll(a('txid')).isEmpty())
 		.run(conn) as r.CursorResult<{ txid: string }>
+	
+	console.log(`blocks fetched`)
 
 	blocks.each((err, a) => (console.log(a.txid), db.table(TABLE_TXS).insert(a).run(conn)))
 
 	while(true)
 	{
+		if (!conn.isOpen())
+		{
+			console.log(`lost connection to rethink!`)
+			conn = await r.connect(RETHINK_URI)
+			console.log(`rethink connection restored`)
+		}
+		
 		await getBlocks()
 	}
 })()
