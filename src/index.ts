@@ -93,7 +93,7 @@ const delay = (time: number) => new Promise(resolve => setTimeout(resolve, time)
 	
 	console.log(`blocks fetched`)
 
-	blocks.each((err, a) => (console.log(a.txid), db.table(TABLE_TXS).insert(a).run(conn)))
+	blocks.each((err, a) => err ? console.error(err) : (a ? (console.log(a.txid), db.table(TABLE_TXS).insert(a).run(conn)) : console.error(`undefined block!`)))
 
 	while(true)
 	{
